@@ -1,0 +1,46 @@
+
+syntax = "proto3";
+package protoreflect;
+option go_package = "github.com/aperrot42/protoreflect/adrbook";
+
+import "google/protobuf/timestamp.proto";
+
+message Simple {
+  string name = 1;
+}
+
+message Person {
+  string name = 1;
+  int32 id = 2;  // Unique ID number for this person.
+  string email = 3;
+
+  enum PhoneType {
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    string number = 1;
+    PhoneType type = 2;
+  }
+
+  repeated PhoneNumber phones = 4;
+
+  google.protobuf.Timestamp last_updated = 5;
+}
+
+service AddressBook {
+  // Sends a greeting
+  rpc GetBook (PersonRequest) returns (PersonReply) {}
+}
+
+// The request message containing the person's name.
+message PersonRequest {
+  string name = 1;
+}
+
+// The response message containing the Person
+message PersonReply {
+  Person Person = 1;
+}
